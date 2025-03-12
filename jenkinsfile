@@ -2,28 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('w/o container') {
-            steps {
-                sh '''
-				echo "w/o container"
-				touch gowtham
-				ls -la
-				'''
-            }
-        }
-        
-        stage('w container') {
+            stage('Build') {
             agent {
 			    docker {
 					image 'node:18-alpine'
-			
+                    reuseNode True
 				}
 			}
             steps {
-                sh '''echo "w container"
+                sh '''
+                npm --version
+                node --version
 				ls -la
+                npm ci
+                npm run build
+                ls -la
 			'''
             }
         }
+    
     }
 }
