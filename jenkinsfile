@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('w/o container') {
+            steps {
+                sh '''
+				echo "w/o container"
+				touch gowtham
+				ls -la
+				'''
+            }
+        }
+        
+        stage('w container') {
+            agent {
+			    docker {
+					image 'node:18-alpine'
+			
+				}
+			}
+            steps {
+                sh '''echo "w container"
+				ls -la
+			'''
+            }
+        }
+    }
+}
